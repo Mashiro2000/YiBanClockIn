@@ -54,3 +54,4 @@ accounts = [
         "mail": "",
         "pushToken": ""
     }
+]
