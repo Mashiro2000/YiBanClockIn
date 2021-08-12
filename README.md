@@ -53,4 +53,4 @@ accounts = [
 ```bash
 pwd # 获取当前位置
 crontab -e
-1 14-18/2 * * * python3 当前目录/YiBan.py
+3 14-18/2 * * * python3 当前目录/YiBan.py
