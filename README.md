@@ -11,7 +11,7 @@
 ```bash
 yum install git -y
 
-git clone https://github.com/Mashiro2000/YiBanClockIn.git
+git clone https://ghproxy.com/https://github.com/Mashiro2000/YiBanClockIn.git   # 国内git较慢，故添加代理前缀
 
 cd YiBanClockIn
 
