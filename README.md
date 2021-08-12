@@ -17,7 +17,7 @@ vi config.py
 ```
 
 ### 配置信息
-Edit `config.json`:
+编辑 `config.py`:
 
 #### 管理员信息
 ```json
