@@ -19,7 +19,7 @@ vi config.py
 ```
 
 ### 配置信息
-编辑 `config.py`:
+编辑 `config.py`
 
 #### 管理员信息
 ```json
@@ -32,7 +32,7 @@ admin = {
         "name": "no-reply",             # 发件人昵称 -非必要
         "sendMail": "123456789@qq.com", # 发送人邮箱 -非必要
         "authCode": "abcdefghijklmnop", # 发送人邮箱授权码[不是密码] -非必要
-        "smtpServer":"smtp.qq.com",     # 对应邮箱服务的SMTP服务器，以QQ邮箱为例:smtp.qq.com -非必要
+        "smtpServer":"smtp.qq.com",     # 对应邮箱服务的SMTP服务器，以QQ邮箱为例smtp.qq.com -非必要
         "port": "465"                   # 对应邮箱服务的端口,25端口[简单邮箱传输协议],465端口[安全的邮箱传输协议] -非必要
     }
 }
