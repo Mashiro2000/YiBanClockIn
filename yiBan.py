@@ -318,7 +318,7 @@ class YiBan:
             "CSRF":self.csrf
         }
         response = self.sess.get(url=url,params=param).json()
-        if response['data']['Id'] == self.result['data']['Initiate']['WFId']:     # 待优化，优化为判定WFid
+        if response['data']['Id'] == self.result['data']['Initiate']['WFId']:
             self.clockIn()
         else:
             return self.notify({
