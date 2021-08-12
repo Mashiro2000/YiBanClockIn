@@ -1,2 +1,5 @@
 # YiBanClockIn
-基于Python爬虫的打卡项目
+
+## 环境
+
+- [Python3](https://www.python.org/) >= 3.6.8
