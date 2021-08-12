@@ -58,4 +58,5 @@ crontab -e
 
 ### 特别说明
 ```bash
-本项目仅适用于闽江学院的学生，其它学校请自行抓包替换掉 - [Python3](https://github.com/Mashiro2000/YiBanClockIn/blob/57fac6150dec5fd16a4196209e6198afd150150e/yiBan.py#L330)这个成员方法中的data局部变量
+本项目仅适用于闽江学院的学生，其它学校请自行抓包
+```
