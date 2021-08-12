@@ -9,6 +9,8 @@
 
 ## Linux
 ```bash
+yum install git -y
+
 git clone https://github.com/Mashiro2000/YiBanClockIn.git
 
 cd YiBanClockIn
