@@ -36,12 +36,12 @@ accounts = [
         "account": "",
         "password": "",
         "remark": "",
-        "mail": "",
+        "mail": ""
     },
     {
         "account": "",
         "password": "",
         "remark": "",
-        "mail": "",
+        "mail": ""
     }
 ]
