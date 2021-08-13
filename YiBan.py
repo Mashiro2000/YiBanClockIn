@@ -395,7 +395,7 @@ def main(admin,accounts):
                     "原因": "多次请求失败，暂不打卡！"
                 })
                 break
-        Notify.sendTotal(allMsg)
+    Notify.sendTotal(allMsg)
 
 if __name__ == '__main__':
     main(admin,accounts)
