@@ -70,20 +70,17 @@ accounts = [
 
 ### 定时设定
 ```bash
-pwd # 获取当前位置
+# 注:以root账号登录Linux
 crontab -e
-3 14-18/2 * * * python3 当前目录/YiBan.py
+3 14-18/2 * * * python3 /root/YiBanClockIn/YiBan.py
 ```
 
 ####
 - [定时帮助](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
 ### 数据来源
-```bash
 本项目的打卡数据来源是基于前一天的打卡数据
-```
 
 ### 特别说明
-```bash
-本项目仅适用于闽江学院的学生，其它学校请自行抓包
-```
+本项目仅适用于闽江学院的学生，其它学校请自行抓包！
+特别感谢舍友提供的账号进行测试！
