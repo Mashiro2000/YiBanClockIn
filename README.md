@@ -74,7 +74,7 @@ accounts = [
 crontab -e
 3 14-18/2 * * * python3 /root/YiBanClockIn/YiBan.py
 ```
-[crontab 定时帮助](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
+[crontab 帮助文档](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
 ### 数据来源
 - 本项目的打卡数据来源是基于前一天的打卡数据
