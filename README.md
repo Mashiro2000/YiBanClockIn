@@ -73,6 +73,7 @@ accounts = [
 # 注:以root账号登录Linux
 crontab -e
 3 14-18/2 * * * python3 /root/YiBanClockIn/YiBan.py
+# 解释:每天,14-18时，每过4小时,第3分钟，执行打卡程序,也就是说14:03和18:03才会执行
 ```
 [crontab 帮助文档](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
