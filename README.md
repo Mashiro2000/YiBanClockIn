@@ -19,7 +19,7 @@
 
 ## 环境
 
-- [Python3](https://www.python.org/) >= 3.6.8
+[Python3](https://www.python.org/) >= 3.6.8
 
 ## Windows
 略
@@ -76,10 +76,10 @@ crontab -e
 ```
 
 ####
-- [定时帮助](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
+[定时帮助](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
 ### 数据来源
-本项目的打卡数据来源是基于前一天的打卡数据
+- 本项目的打卡数据来源是基于前一天的打卡数据
 
 ### 特别说明
 - 本项目仅适用于闽江学院的学生，其它学校请自行抓包！
