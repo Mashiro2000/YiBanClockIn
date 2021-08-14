@@ -32,6 +32,8 @@ git clone https://ghproxy.com/https://github.com/Mashiro2000/YiBanClockIn.git   
 
 cd YiBanClockIn
 
+chmod 777 YiBan.py
+
 vi config.py
 ```
 
