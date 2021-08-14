@@ -42,6 +42,12 @@ from config import accounts ,admin
 # 全局变量
 allMsg = []
 
+# 初始化执行语句
+if os.path.exists("run.log"):
+    os.remove("run.log")
+with open(file="run.log",mode="w",encoding="utf-8") as f:
+    f.write(f"时间:{time.strftime('%Y-%m-%d  %H:%M:%S', time.localtime())}\n")
+
 class Notify:
     def __init__(self,admin,dic):
         self.admin = admin
@@ -53,15 +59,16 @@ class Notify:
         else:
             return self.dic['account']
 
-    def send(self,content):
+    def send(self,content,isNotify=True):
         string = ""
         for key,value in content.items():
             string = string + f"{key}: {value}\n"
         allMsg.append(content)
         if self.dic['mail'] != "":
-            return self.sendMail(string)
+            if isNotify == True:
+                return self.sendMail(string)
         else:
-            print(f"{self.getName()}未配置通知方式，取消发送！\n")
+            return Notify.log(f"{self.getName()}\t未配置个人通知方式，取消发送！\n")
 
     def sendMail(self,content):
         try:
@@ -74,16 +81,22 @@ class Notify:
             server.login(self.admin['mail']['sendMail'], self.admin['mail']['authCode'])  # 括号中对应的是发件人邮箱账号、邮箱密码
             server.sendmail(self.admin['mail']['sendMail'],[self.dic['mail']],msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
             server.quit()  # 关闭连接
-            print(f"{self.getName()}\t信件发送成功！\n")
+            return Notify.log(f"{self.getName()}\t已配置个人通知方式，信件发送成功！\n")
         except Exception as error:
-            print(f"{self.getName()}\t邮件发送失败!\n失败原因:{error}\n")
+            return Notify.log(f"{self.getName()}\t已配置个人通知方式，邮件发送失败!\n失败原因:{error}\n")
+
+    @classmethod
+    def log(cls,content):
+        with open(file="run.log",mode="a",encoding="utf-8") as f:
+            f.write(content)
+            print(content)
 
     @staticmethod
     def sendTotal(lists):
         if len([each for each in admin['mail'].values() if each !=""]) == 5:
             Notify.sendTotalByMail(lists)
         else:
-            print("无配置全体通知方式，取消发信！")
+            Notify.log("无配置全体通知方式，取消发信！")
 
     @staticmethod
     def sendTotalByMail(lists):
@@ -93,6 +106,7 @@ class Notify:
                 for key,value in each.items():
                     content = content + f"{key}: {value}\n"
                 content = content +"\n"
+            Notify.log("\n执行结果:\n" + content)
             try:
                 msg= MIMEText(content, 'plain', 'utf-8')
                 msg['From']=formataddr(["no-reply",admin['mail']['sendMail']])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
@@ -103,9 +117,9 @@ class Notify:
                 server.login(admin['mail']['sendMail'], admin['mail']['authCode'])  # 括号中对应的是发件人邮箱账号、邮箱密码
                 server.sendmail(admin['mail']['sendMail'],[admin['mail']['adminMail']],msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
                 server.quit()  # 关闭连接
-                print(f"管理员信件发送成功！\n")
+                Notify.log(f"管理员信件发送成功！")
             except Exception as error:
-                print(f"管理员邮件发送失败!\n失败原因:{error}\n")
+                Notify.log(f"管理员邮件发送失败!\n失败原因:{error}")
 
 
 class YiBan:
@@ -217,8 +231,11 @@ class YiBan:
         if response['code'] == 0:
             if len(response['data']) > 0:
                 for sub in response['data']:
-                    if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime(time.time()))}）":
-                        return print(f"{self.getName()}\t今日已打卡！")
+                    if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime())}）":
+                        return self.notify.send({
+                            "账号": self.getName(),
+                            "状态" :"今日已打卡"
+                        },isNotify=False)
                 else:
                     dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
                     if len(dic) == 1:
