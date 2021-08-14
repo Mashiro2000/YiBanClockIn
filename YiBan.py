@@ -239,7 +239,7 @@ class YiBan:
                         return self.notify.send({
                             "账号": self.getName(),
                             "状态" :"今日已打卡"
-                        },isNotify=True)
+                        },isNotify=False)
                 else:
                     dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
                     if len(dic) == 1:
