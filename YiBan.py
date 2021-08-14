@@ -64,11 +64,11 @@ class Notify:
         for key,value in content.items():
             string = string + f"{key}: {value}\n"
         allMsg.append(content)
-        if self.dic['mail'] != "":
-            if isNotify == True:
+        if isNotify == True:
+            if self.dic['mail'] != "":
                 return self.sendMail(string)
-        else:
-            return Notify.log(f"{self.getName()}\t未配置个人通知方式，取消发送！\n")
+            else:
+                return Notify.log(f"{self.getName()}\t未配置个人通知方式，取消发送！\n")
 
     def sendMail(self,content):
         try:
