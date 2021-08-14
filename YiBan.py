@@ -42,10 +42,14 @@ from config import accounts ,admin
 # 全局变量
 allMsg = []
 
+# 主程序根目录与运行日志
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+LOG_PATH = os.path.join(BASE_PATH, "run.log")
+
 # 初始化执行语句
-if os.path.exists("run.log"):
-    os.remove("run.log")
-with open(file="run.log",mode="w",encoding="utf-8") as f:
+if os.path.exists(LOG_PATH):
+    os.remove(LOG_PATH)
+with open(file=LOG_PATH,mode="w",encoding="utf-8") as f:
     f.write(f"时间:{time.strftime('%Y-%m-%d  %H:%M:%S', time.localtime())}\n")
 
 class Notify:
@@ -85,9 +89,9 @@ class Notify:
         except Exception as error:
             return Notify.log(f"{self.getName()}\t已配置个人通知方式，邮件发送失败!\n失败原因:{error}\n")
 
-    @classmethod
-    def log(cls,content):
-        with open(file="run.log",mode="a",encoding="utf-8") as f:
+    @staticmethod
+    def log(content):
+        with open(file=LOG_PATH,mode="a",encoding="utf-8") as f:
             f.write(content)
             print(content)
 
@@ -235,7 +239,7 @@ class YiBan:
                         return self.notify.send({
                             "账号": self.getName(),
                             "状态" :"今日已打卡"
-                        },isNotify=False)
+                        },isNotify=True)
                 else:
                     dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
                     if len(dic) == 1:
