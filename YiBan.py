@@ -86,9 +86,9 @@ class Notify:
             server.login(self.admin['mail']['sendMail'], self.admin['mail']['authCode'])  # 括号中对应的是发件人邮箱账号、邮箱密码
             server.sendmail(self.admin['mail']['sendMail'],[self.dic['mail']],msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
             server.quit()  # 关闭连接
-            return Notify.log(f"{self.getName()}\t已配置个人通知方式，信件发送成功！\n")
+            return Notify.log(f"{self.getName()}\t信件发送成功！\n")
         except Exception as error:
-            return Notify.log(f"{self.getName()}\t已配置个人通知方式，邮件发送失败!\n失败原因:{error}\n")
+            return Notify.log(f"{self.getName()}\t邮件发送失败!\t失败原因:{error}\n")
 
     def sendPushPlus(self,content):
         url = 'http://www.pushplus.plus/send'
@@ -104,7 +104,7 @@ class Notify:
             if response['code'] == 200:
                 return Notify.log(f"{self.getName()}\tPush Plus发信成功！\n")
             else:
-                return Notify.log(f"{self.getName()}\tPush Plus发信失败！\t失败原因:{response['msg']}\n")
+                return Notify.log(f"{self.getName()}\tPush Plus发信失败！\t失败原因:{response['msg']}")
 
     @staticmethod
     def log(content):
@@ -167,7 +167,7 @@ class Notify:
                 server.quit()  # 关闭连接
                 Notify.log(f"管理员信件发送成功！")
             except Exception as error:
-                Notify.log(f"管理员邮件发送失败!\t失败原因:{error}")
+                Notify.log(f"管理员邮件发送失败!\n失败原因:{error}")
 
 
 class YiBan:
