@@ -70,6 +70,8 @@ class Notify:
         if isNotify == True:
             if self.dic['mail'] != "":
                 return self.sendMail(string)
+            elif self.dic['pushToken'] != "":
+                return self.sendPushPlus(string)
             else:
                 return Notify.log(f"{self.getName()}\t未配置个人通知方式，取消发送！\n")
 
@@ -95,16 +97,14 @@ class Notify:
             data = json.dumps({
                 "token": self.dic['pushToken'],
                 "title":"易班打卡通知",
-                "content":json.dumps(content),
-                "template":"json"
+                "content":content,
+                "template":"txt"
             })
             response = requests.post(url=url,data=data,headers=headers).json()
-            for key,value in content.items():
-                return Notify.log(f"{key}:{value}")
             if response['code'] == 200:
-                return Notify.log("Push Plus发信成功！\n")
+                return Notify.log(f"{self.getName()}\tPush Plus发信成功！\n")
             else:
-                return Notify.log(f"Push Plus发信失败！\t失败原因:{response['msg']}")
+                return Notify.log(f"{self.getName()}\tPush Plus发信失败！\t失败原因:{response['msg']}\n")
 
     @staticmethod
     def log(content):
@@ -141,12 +141,11 @@ class Notify:
                     "topic":admin['pushGroup']['pushTopic']
                 })
                 response = requests.post(url=url,data=data,headers=headers).json()
-                print(content)
                 if response['code'] == 200:
                     Notify.log(f"Push Plus发信成功！")
                 else:
                     Notify.log(f"Push Plus发信失败！\t失败原因:{response['msg']}")
-                    
+
     @staticmethod
     def sendTotalByMail(lists):
         if len(lists) != 0:
@@ -168,7 +167,7 @@ class Notify:
                 server.quit()  # 关闭连接
                 Notify.log(f"管理员信件发送成功！")
             except Exception as error:
-                Notify.log(f"管理员邮件发送失败!\n失败原因:{error}")
+                Notify.log(f"管理员邮件发送失败!\t失败原因:{error}")
 
 
 class YiBan:
@@ -284,7 +283,7 @@ class YiBan:
                         return self.notify.send({
                             "账号": self.getName(),
                             "状态" :"今日已打卡"
-                        },isNotify=True)
+                        },isNotify=False)
                 else:
                     dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
                     if len(dic) == 1:
