@@ -13,7 +13,6 @@ import json
 import time
 import base64
 import random
-import platform
 
 # 邮箱模组
 import smtplib
@@ -27,7 +26,6 @@ except ModuleNotFoundError:
     print("缺少requests依赖！程序将尝试安装依赖！")
     os.system("pip3 install requests -i https://pypi.tuna.tsinghua.edu.cn/simple")
     os.execl(sys.executable, 'python3', __file__, *sys.argv)
-    os.system("clear") if platform.system() == "Linux" else os.system("cls") if platform.system() == "Windows" else None
 
 try:
     from Crypto.Cipher import PKCS1_v1_5
@@ -36,7 +34,6 @@ except ModuleNotFoundError:
     print("缺少pycryptodome依赖！程序将尝试安装依赖！")
     os.system("pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple")
     os.execl(sys.executable, 'python3', __file__, *sys.argv)
-    os.system("clear") if platform.system() == "Linux" else os.system("cls") if platform.system() == "Windows" else None
 
 # 配置文件
 from config import accounts ,admin
@@ -132,6 +129,7 @@ class Notify:
                 for key,value in each.items():
                     content = content + f"{key}: {value}\n"
                 content = content +"\n"
+            Notify.log("\n执行结果:\n" + content)
             url = 'http://www.pushplus.plus/send'
             headers = {"Content-Type":"application/json"}
             if admin['pushGroup']['pushToken'] != "" and admin['pushGroup']['pushTopic'] != "":
