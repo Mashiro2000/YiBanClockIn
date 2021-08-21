@@ -43,6 +43,10 @@ vi config.py
 #### 管理员信息
 ```json
 admin = {
+    "pushGroup" :{
+        "pushToken": "abcdefghijklmnopqrstuvwsyz",    # Push Plus Token
+        "pushTopic": "777"  # Push Plus群组编码
+    },
     "mail":{
         "sendMail": "123456789@qq.com", # 发送人邮箱 -非必要
         "authCode": "abcdefghijklmnop", # 发送人邮箱授权码[不是密码] -非必要
@@ -61,6 +65,7 @@ accounts = [
         "password": "mypassword",       # 你的易班密码 -必要
         "remark": "hello",              # 备注 -非必要
         "mail": "123456789@qq.com",     # 通知邮箱 -非必要
+        "pushToken": ""                 # Push Plus Token
     }
 ]
 ```
@@ -69,8 +74,7 @@ accounts = [
 ```bash
 # 注:以root账号登录Linux
 crontab -e
-3 14-18/2 * * * python3 /root/YiBanClockIn/YiBan.py
-# 解释:每天,14-18时，每过4小时,第3分钟，执行打卡程序,也就是说14:03和18:03才会执行
+3 14/2 * * * python3 /root/YiBanClockIn/YiBan.py
 ```
 [crontab 帮助文档](https://www.runoob.com/w3cnote/linux-crontab-tasks.html)
 
