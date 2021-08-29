@@ -36,19 +36,18 @@ except ModuleNotFoundError:
     os.execl(sys.executable, 'python3', __file__, *sys.argv)
 
 # 配置文件
-from config import accounts ,admin
+from config import accounts ,admin ,LOG_PATH
 
 # 全局变量
 allMsg = []
 
 # 主程序根目录与运行日志
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-LOG_PATH = os.path.join(BASE_PATH, "run.log")
+LOG_FILE = os.path.join(LOG_PATH if LOG_PATH != "" else os.path.dirname(os.path.abspath(__file__)) ,time.strftime("%Y-%m-%d-%H-%M-%S",time.localtime()))
 
 # 初始化执行语句
-if os.path.exists(LOG_PATH):
-    os.remove(LOG_PATH)
-with open(file=LOG_PATH,mode="w",encoding="utf-8") as f:
+if os.path.exists(LOG_FILE):
+    os.remove(LOG_FILE)
+with open(file=LOG_FILE,mode="w",encoding="utf-8") as f:
     f.write(f"时间:{time.strftime('%Y-%m-%d  %H:%M:%S', time.localtime())}\n")
 
 class Notify:
@@ -108,7 +107,7 @@ class Notify:
 
     @staticmethod
     def log(content):
-        with open(file=LOG_PATH,mode="a",encoding="utf-8") as f:
+        with open(file=LOG_FILE,mode="a",encoding="utf-8") as f:
             f.write(content)
             print(content)
 
@@ -247,7 +246,7 @@ class YiBan:
             "authorization": f"Bearer {self.access_token}",
             "logintoken": self.access_token
         }
-        self.sess.get(f"https://f.yiban.cn/iapp7463",headers=header,allow_redirects=False)
+        self.sess.get(url=f"https://f.yiban.cn/iapp7463",headers=header,allow_redirects=False)
         time.sleep(0.1)
         response = self.sess.get(url=url,params=param,headers=header,allow_redirects=False)
         self.verify = response.headers['Location']
