@@ -42,7 +42,7 @@ from config import accounts ,admin ,LOG_PATH
 allMsg = []
 
 # 主程序根目录与运行日志
-LOG_FILE = os.path.join(LOG_PATH if LOG_PATH != "" else os.path.dirname(os.path.abspath(__file__)) ,time.strftime("%Y-%m-%d-%H-%M-%S",time.localtime()))
+LOG_FILE = os.path.join(LOG_PATH if LOG_PATH != "" else os.path.dirname(os.path.abspath(__file__)) ,'yiban.log')
 
 # 初始化执行语句
 if os.path.exists(LOG_FILE):
