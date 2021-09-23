@@ -1,5 +1,5 @@
 # !/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # @Time    : 2021/8/12
 # @Author  : 2984922017@qq.com
 # @File    : YiBan.py
