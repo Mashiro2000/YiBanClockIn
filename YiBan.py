@@ -234,7 +234,8 @@ class YiBan:
         else:
             return self.notify.send({
                 "账号": self.getName(),
-                "状态": "登录失败！"
+                "状态": "登录失败！",
+                "原因":response['msg']
             })
 
     def getAuthUrl(self):
