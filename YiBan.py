@@ -285,7 +285,7 @@ class YiBan:
                             "状态" :"今日已打卡"
                         },isNotify=False)
                 else:
-                    dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
+                    dic = [content for content in response['data'] if re.findall(rf"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
                     if len(dic) == 1:
                         self.CompletedTaskID  = dic[0]['TaskId']
                         time.sleep(0.1)
@@ -343,7 +343,7 @@ class YiBan:
                     "状态": "任务未发布，故不继续执行！"
                 })
             elif len(response['data']) > 1:
-                dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time()))}）",content['Title']) !=[]]
+                dic = [content for content in response['data'] if re.findall(rf"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time()))}）",content['Title']) !=[]]
                 if len(dic) == 1:
                     self.unCompletedTaskID  = dic[0]['TaskId']
                     time.sleep(0.1)
