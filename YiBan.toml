@@ -1,0 +1,22 @@
+# 管理员配置
+[admin]
+sendMail="463022229@qq.com"                         # 发送人邮箱
+authCode="baautaapgknccbbd"                         # 发送人邮箱授权码(不是密码)
+smtpServer="smtp.qq.com"            # 对应邮箱服务的SMTP服务器，以QQ邮箱为例:smtp.qq.com
+port="465"                          # 对应邮箱服务的端口,25端口(简单邮箱传输协议),465端口(安全的邮箱传输协议)
+
+
+
+
+# 用户配置
+[[account]]
+nickname="FHL"
+account="15759699216"
+password="FHl20001124"
+mail="2984922017@qq.com"
+
+[[account]]
+nickname=""
+account=""
+password=""
+
