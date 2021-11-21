@@ -1,22 +1,22 @@
-# ¹ÜÀíÔ±ÅäÖÃ
+# ç®¡ç†å‘˜é…ç½®
 [admin]
-sendMail="463022229@qq.com"                         # ·¢ËÍÈËÓÊÏä
-authCode="baautaapgknccbbd"                         # ·¢ËÍÈËÓÊÏäÊÚÈ¨Âë(²»ÊÇÃÜÂë)
-smtpServer="smtp.qq.com"            # ¶ÔÓ¦ÓÊÏä·şÎñµÄSMTP·şÎñÆ÷£¬ÒÔQQÓÊÏäÎªÀı:smtp.qq.com
-port="465"                          # ¶ÔÓ¦ÓÊÏä·şÎñµÄ¶Ë¿Ú,25¶Ë¿Ú(¼òµ¥ÓÊÏä´«ÊäĞ­Òé),465¶Ë¿Ú(°²È«µÄÓÊÏä´«ÊäĞ­Òé)
+sendMail=""                         # å‘é€äººé‚®ç®±
+authCode=""                         # å‘é€äººé‚®ç®±æˆæƒç (ä¸æ˜¯å¯†ç )
+smtpServer="smtp.qq.com"            # å¯¹åº”é‚®ç®±æœåŠ¡çš„SMTPæœåŠ¡å™¨ï¼Œä»¥QQé‚®ç®±ä¸ºä¾‹:smtp.qq.com
+port="465"                          # å¯¹åº”é‚®ç®±æœåŠ¡çš„ç«¯å£,25ç«¯å£(ç®€å•é‚®ç®±ä¼ è¾“åè®®),465ç«¯å£(å®‰å…¨çš„é‚®ç®±ä¼ è¾“åè®®)
 
 
 
 
-# ÓÃ»§ÅäÖÃ
+# ç”¨æˆ·é…ç½®
 [[account]]
-nickname="FHL"
-account="15759699216"
-password="FHl20001124"
-mail="2984922017@qq.com"
+nickname=""
+account=""
+password=""
+mail=""
 
 [[account]]
 nickname=""
 account=""
 password=""
-
+mail=""
