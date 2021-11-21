@@ -25,8 +25,6 @@ try:
 except ModuleNotFoundError:
     print("缺少requests依赖！程序将尝试安装依赖！")
     os.system("pip3 install requests -i https://pypi.tuna.tsinghua.edu.cn/simple")
-    os.execl(sys.executable, 'python3', __file__, *sys.argv)
-
 try:
     from Crypto.Cipher import PKCS1_v1_5
     from Crypto.PublicKey import RSA
