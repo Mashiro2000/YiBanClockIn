@@ -1,0 +1,22 @@
+# 管理员配置
+[admin]
+sendMail=""            # 发送人邮箱
+authCode=""                 # 发送人邮箱授权码(不是密码)
+smtpServer="smtp.qq.com"                   # 对应邮箱服务的SMTP服务器，以qq邮箱为例:smtp.qq.com(推荐，其它邮箱可能报错)
+port="465"                                  # 对应邮箱服务的端口,25端口(简单邮箱传输协议),465端口(安全的邮箱传输协议)
+
+
+
+# 用户配置
+[[account]]
+nickname=""
+account=""
+password=""
+mail=""
+
+[[account]]
+nickname=""
+account=""
+password=""
+mail=""
+
