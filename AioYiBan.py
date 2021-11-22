@@ -491,7 +491,7 @@ def adminEnv():
 
 async def asyncMain():
     """
-        此函数应当才有海象运算符更为合适
+        此函数应当采用海象运算符更为合适
         但Linux的python默认为3.6.8
     """
     account = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
