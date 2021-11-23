@@ -25,7 +25,7 @@
 `略`
 
 ### Linux部署(以CentOS7为例)
-bash```
+```
 yum update
 
 yum install git python3 -y
