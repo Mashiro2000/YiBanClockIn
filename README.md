@@ -48,6 +48,7 @@ ql repo https://github.com/Mashiro2000/YiBanClockIn.git "" "images|notify"
 
 #### 青龙环境变量
 ```text
+> 账号信息
 名称:YbCookie
 值:nickname=XXX;account=11111111111;password=thisISPassword;mail=2222222222@qq.com;
 -----------------------------------------------------------------------------------
