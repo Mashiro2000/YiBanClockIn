@@ -5,6 +5,11 @@
 # @File    : AioYiBan.py
 # @Software: PyCharm
 
+'''
+cron:  10 14 * * * AioYiBan.py
+new Env('校本化打卡');
+'''
+
 # 系统自带库
 import os
 import re
@@ -62,7 +67,7 @@ except Exception as error:
 DEBUG = False
 
 # 全局变量
-allMess = ''
+allMess = f"任务:校本化打卡\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())}\n"
 
 class AioYiBan:
     def __init__(self,dic,admin):
