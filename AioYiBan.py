@@ -287,9 +287,38 @@ class AioYiBan:
                 elif len(response['data']) == 0:
                     self.notify(f"昨日无打卡任务，历史数据调用失败")
                     return False
-                elif response['code'] == 999:
-                    self.notify(f"校本化授权已过期")
-                    return False
+        elif response['code'] == 999:
+            if await self.authYiBan() == True:
+                return False
+            else:
+                self.notify(f"易班授权已过期，尝试授权失败!")
+        else:
+            self.notify(f"出现错误，原因:{response}")
+            return False
+
+    async def authYiBan(self):
+        url = 'https://oauth.yiban.cn/code/usersure'
+        headers = {
+            "Host": "oauth.yiban.cn",
+            "Origin": "https://oauth.yiban.cn",
+            "Referer": "https://oauth.yiban.cn/code/html?client_id=95626fa3080300ea&redirect_uri=https://f.yiban.cn/iapp7463",
+            "User-Agent": "yiban"
+        }
+        data = {
+            'client_id':'95626fa3080300ea',
+            'redirect_uri':'https://f.yiban.cn/iapp7463',
+            'state':'',
+            'scope':'1,2,3,4,',
+            'display':'html'
+        }
+        async with await self.sess.post(url=url,headers=headers,data=data) as aioResponse:
+            response = aioResponse.status
+            await self.joinCookie(aioResponse)
+            if response == 200:
+                await self.runFun()
+                return True
+            else:
+                return False
 
     async def getInitiateId(self):
         url = f"https://api.uyiban.com/officeTask/client/index/detail"
@@ -431,21 +460,24 @@ class AioYiBan:
                 self.notify(f"多次请求失败，暂不打卡！")
                 return False
 
+    async def runFun(self):
+        await self.getAuthUrl()
+        await self.auth()
+        if await self.CompletedList():
+            await self.getInitiateId()
+            await self.getClockInMess()
+            if await self.unCompletedList():
+                if await self.getWFId():
+                    if await self.isUpdate():
+                        await self.formatDate()
+                        await self.clockIn()
+        self.mess += ('*'*40 + '\n'*4)
+
     async def run(self):
         global allMess
         await self.getName()
         if await self.tryLogin():
-            await self.getAuthUrl()
-            await self.auth()
-            if await self.CompletedList():
-                await self.getInitiateId()
-                await self.getClockInMess()
-                if await self.unCompletedList():
-                    if await self.getWFId():
-                        if await self.isUpdate():
-                            await self.formatDate()
-                            await self.clockIn()
-            self.mess += ('*'*40 + '\n'*4)
+            await self.runFun()
         allMess += self.mess
 
     async def start(self):
