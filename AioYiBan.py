@@ -56,11 +56,16 @@ except ModuleNotFoundError:
 
 # 配信文件
 try:
-    from sendNotify import send
+    # 新版青龙会自带notify.py，兼容旧版青龙写法，语句无误
+    # 导入失败是允许范围内，且不打印提示
+    from notify import send
     isNotify =True
-except Exception as error:
-    isNotify = False
-    '导入失败是允许范围内，且不打印提示'
+except:
+    try:
+        from sendNotify import send
+        isNotify =True
+    except:
+        isNotify = False
 
 # 调试模式(仅用于检测打卡请求)
 DEBUG = False
