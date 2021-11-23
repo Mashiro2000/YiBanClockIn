@@ -60,8 +60,7 @@ try:
     isNotify =True
 except Exception as error:
     isNotify = False
-    print('推送文件导入失败')
-    print(f'失败原因:{error}')
+    '导入失败是允许范围内，且不打印提示'
 
 # 调试模式(仅用于检测打卡请求)
 DEBUG = False
