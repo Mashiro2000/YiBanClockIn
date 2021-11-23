@@ -1,0 +1,4 @@
+toml
+aiohttp
+requests
+pycryptodome
