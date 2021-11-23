@@ -531,7 +531,7 @@ async def asyncMain():
         # 3.8.0版本写法
         # tasks = [asyncio.create_task(AioYiBan(each,admin).start()) for each in account if each]
         # 3.6.8版本写法
-        tasks = [asyncio.create_task(AioYiBan(each,admin).start()) for each in account if each]
+        tasks = [asyncio.ensure_future(AioYiBan(each,admin).start()) for each in account if each]
         await asyncio.wait(tasks,timeout=None)
     else:
         print("配置文件与环境变量均无易班账号，取消执行")
