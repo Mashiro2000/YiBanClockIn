@@ -20,3 +20,25 @@
 ## 环境
 
 [Python3](https://www.python.org/) >= 3.6.8
+
+### Windows部署
+`略`
+
+### Linux部署(以CentOS7为例)
+bash```
+yum update
+
+yum install git python3 -y
+
+git clone https://ghproxy.com/https://github.com/Mashiro2000/YiBanClockIn.git
+
+cd YiBanClockIn
+
+pip3 install -r requirements.txt
+
+vi YiBan.toml
+
+python3 AioYiBan.py
+```
+
+### 青龙拉库命令
