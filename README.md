@@ -45,3 +45,25 @@ python3 AioYiBan.py
 ```
 ql repo https://github.com/Mashiro2000/YiBanClockIn.git "" "images|notify"
 ```
+
+#### 青龙环境变量
+```text
+名称:YbCookie
+值:nickname=XXX;account=11111111111;password=thisISPassword;mail=2222222222@qq.com;
+-----------------------------------------------------------------------------------
+> 发送人邮箱
+名称:sendMail
+值:3333333333@qq.com
+--------------------
+> 邮箱授权码(不是密码)
+名称: authCode
+值:abcdrfghijkl
+--------------------
+> SMTP服务器
+名称: smtpServer
+值:smtp.qq.com     # 以QQ邮箱为例:smtp.qq.com
+--------------------
+> 邮箱服务的端口
+名称:port
+值:465             # 25端口(简单邮箱传输协议),465端口(安全的邮箱传输协议)
+```
