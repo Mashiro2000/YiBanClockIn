@@ -42,3 +42,6 @@ python3 AioYiBan.py
 ```
 
 ### 青龙拉库命令
+```
+ql repo https://github.com/Mashiro2000/YiBanClockIn.git "" "images|sendNotify" "sendNotify"
+```
