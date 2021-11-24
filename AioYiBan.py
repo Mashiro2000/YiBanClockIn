@@ -231,6 +231,7 @@ class AioYiBan:
             await self.joinCookie(aioResponse1)
             await asyncio.sleep(0.1)
             async with await self.sess.get(url=url,params=params,headers=header,allow_redirects=False) as aioResponse2:
+                await asyncio.sleep(0.1)
                 self.verify = aioResponse2.headers['Location']
                 await self.joinCookie(aioResponse2)
                 self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
@@ -256,8 +257,13 @@ class AioYiBan:
     async def CompletedList(self):
         yesterday = time.strftime("%Y-%m-%d", time.localtime(time.time() - 86400))
         today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
-        url = f"https://api.uyiban.com/officeTask/client/index/completedList?StartTime={yesterday}%2000%3A00&EndTime={today}%2023%3A59&CSRF={self.csrf}"
-        async with await self.sess.get(url=url) as aioResponse:
+        url = f"https://api.uyiban.com/officeTask/client/index/completedList"
+        params = {
+            'StartTime': f"{today} 00:00",
+            'EndTime': f"{today} 23:00",
+            'CSRF': self.csrf
+        }
+        async with await self.sess.get(url=url,params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html',encoding='utf-8')
             await self.joinCookie(aioResponse)
         if response['code'] == 0:
