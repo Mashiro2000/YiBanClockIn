@@ -259,7 +259,7 @@ class AioYiBan:
         today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
         url = f"https://api.uyiban.com/officeTask/client/index/completedList"
         params = {
-            'StartTime': f"{today} 00:00",
+            'StartTime': f"{yesterday} 00:00",
             'EndTime': f"{today} 23:00",
             'CSRF': self.csrf
         }
