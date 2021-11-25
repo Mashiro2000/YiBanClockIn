@@ -584,7 +584,7 @@ def main_handler(event, context) -> None:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncMain())
-    if isNotify == False:
+    if isNotify == True:
         send('易班校本化打卡',allMess)
     else:
         print(allMess)
