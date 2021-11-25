@@ -5,10 +5,10 @@
 # @File    : AioYiBan.py
 # @Software: PyCharm
 
-'''
+"""
 cron:  10 14 * * * AioYiBan.py
 new Env('校本化打卡');
-'''
+"""
 
 # 系统自带库
 import os
@@ -17,7 +17,6 @@ import json
 import time
 import base64
 import random
-import logging
 import asyncio
 
 # 邮箱模组
@@ -70,7 +69,8 @@ DEBUG = False
 allMess = f"任务:校本化打卡\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())}\n"
 
 class AioYiBan:
-    def __init__(self,dic,admin):
+    # 构造函数
+    def __init__(self,dic:dict,admin:dict) -> None:
         self.dic = dic
         self.admin = admin
         self.mess = ''
@@ -79,13 +79,15 @@ class AioYiBan:
         self.cookies = {}
         self.cookies.update({"csrf_token":self.csrf})
 
-    async def getName(self):
+    # 获取用户名
+    async def getName(self) -> None:
         if self.dic['nickname'] != "":
             self.name = self.dic['nickname']
         else:
             self.name =  self.dic['account']
 
-    def notify(self,text,isSend=True):
+    # 个体邮件通知
+    def notify(self,text:str,isSend:bool=True) -> None:
         self.mess += f"{self.name}\t{text}\n"
         if isSend == True:
             if all(self.admin.values()) and self.dic['mail']:
@@ -93,8 +95,8 @@ class AioYiBan:
             else:
                 print("管理员邮箱未配置或用户未提供邮箱，取消配信")
 
-    async def encryptPassword(self, pwd):
-        #密码加密
+    # 密码加密
+    async def encryptPassword(self, pwd:str) -> str:
         PUBLIC_KEY = '''-----BEGIN PUBLIC KEY-----
             MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA6aTDM8BhCS8O0wlx2KzA
             Ajffez4G4A/QSnn1ZDuvLRbKBHm0vVBtBhD03QUnnHXvqigsOOwr4onUeNljegIC
@@ -113,18 +115,21 @@ class AioYiBan:
         cipher_text = base64.b64encode(cipher.encrypt(bytes(pwd, encoding="utf8")))
         return cipher_text.decode("utf-8")
 
-    def aes_pkcs7padding(self,data):
+    # AES填充模式
+    def aes_pkcs7padding(self,data:bytes) -> bytes:
         bs = AES.block_size
         padding = bs - len(data) % bs
         padding_text = bytes(chr(padding) * padding, 'utf-8')
         return data + padding_text
 
-    def aes_encrypt(self,data):
+    # AES加密
+    def aes_encrypt(self,data:str) -> bytes:
         cipher = AES.new(bytes('2knV5VGRTScU7pOq', 'utf-8'), AES.MODE_CBC, bytes('UmNWaNtM0PUdtFCs', 'utf-8'))
         encrypted = base64.b64encode(cipher.encrypt(self.aes_pkcs7padding(bytes(data, 'utf-8'))))
         return base64.b64encode(encrypted)
 
-    def sendMail(self,text):
+    # 邮箱模板以及配信方法
+    def sendMail(self,text:str) -> None:
         try:
             content = f"""<div style="height: ;"></div>
             <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
@@ -169,8 +174,8 @@ class AioYiBan:
                 </div>
                     """
             msg= MIMEText(content, 'html', 'utf-8')
-            msg['From']=formataddr(["no-reply",self.admin['sendMail']])                 # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-            msg['To']=formataddr([self.name,self.dic['mail']])                          # 括号里的对应收件人邮箱昵称、收件人邮箱账号
+            msg['From']=formataddr(("no-reply",self.admin['sendMail']))                 # 括号里的对应发件人邮箱昵称、发件人邮箱账号
+            msg['To']=formataddr((self.name,self.dic['mail']))                          # 括号里的对应收件人邮箱昵称、收件人邮箱账号
             msg['Subject'] = "易班打卡通知"                                               # 邮件的主题，也可以说是标题
             server=smtplib.SMTP_SSL(self.admin['smtpServer'], int(self.admin['port']))  # 发件人邮箱中的SMTP服务器，端口
             server.login(self.admin['sendMail'], self.admin['authCode'])                # 括号中对应的是发件人邮箱账号、邮箱密码
@@ -180,12 +185,12 @@ class AioYiBan:
         except Exception as error:
             return print(f"{self.name}\t邮件发送失败!\t失败原因:{error}\n")
 
-    async def joinCookie(self,aioResponse):
+    async def joinCookie(self,aioResponse) -> None:
         for i in aioResponse.cookies.values():
             ckList = re.findall(r'Set-Cookie: (.*?);',str(i),re.S)[0].split('=')
             self.cookies.update({ckList[0]: ckList[-1]})
 
-    async def login(self):
+    async def login(self) -> bool:
         url = "https://mobile.yiban.cn/api/v4/passport/login"
         data = {
             "device": "HUAWEI",
@@ -218,7 +223,7 @@ class AioYiBan:
                 self.notify(f"登录失败",isSend=False)
                 return False
 
-    async def getAuthUrl(self):
+    async def getAuthUrl(self) -> None:
         url = "https://f.yiban.cn/iapp/index"
         params = {
             "act":"iapp7463"
@@ -237,7 +242,7 @@ class AioYiBan:
                 self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
 
 
-    async def auth(self):
+    async def auth(self) -> None:
         url = "https://api.uyiban.com/base/c/auth/yiban"
         self.sess.headers.update({
             'origin': 'https://app.uyiban.com',
@@ -254,7 +259,7 @@ class AioYiBan:
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
 
-    async def CompletedList(self):
+    async def CompletedList(self) -> bool:
         yesterday = time.strftime("%Y-%m-%d", time.localtime(time.time() - 86400))
         today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
         url = f"https://api.uyiban.com/officeTask/client/index/completedList"
@@ -278,7 +283,7 @@ class AioYiBan:
                                 self.CompletedTaskID = sub['TaskId']
                                 return True
                     else:
-                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
+                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
                         if len(dic) == 1:
                             self.CompletedTaskID  = dic[0]['TaskId']
                             return True
@@ -297,7 +302,7 @@ class AioYiBan:
                 self.notify(f"出现错误，原因:{response}")
                 return False
 
-    async def authYiBan(self):
+    async def authYiBan(self) -> bool:
         url = 'https://oauth.yiban.cn/code/usersure'
         headers = {
             "Host": "oauth.yiban.cn",
@@ -322,7 +327,7 @@ class AioYiBan:
             else:
                 return False
 
-    async def getInitiateId(self):
+    async def getInitiateId(self) -> None:
         url = f"https://api.uyiban.com/officeTask/client/index/detail"
         params = {
             "TaskId":self.CompletedTaskID,
@@ -334,7 +339,7 @@ class AioYiBan:
             self.InitiateId = response['data']['InitiateId']
             await asyncio.sleep(0.1)
 
-    async def getClockInMess(self):
+    async def getClockInMess(self) -> None:
         url = f"https://api.uyiban.com/workFlow/c/work/show/view/{self.InitiateId}"
         params = {
             "CSRF": self.csrf
@@ -344,7 +349,7 @@ class AioYiBan:
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
 
-    async def unCompletedList(self):
+    async def unCompletedList(self) -> bool:
         if DEBUG == True:
             self.unCompletedTaskID = self.CompletedTaskID
             return True
@@ -379,7 +384,7 @@ class AioYiBan:
                 self.notify(f"未知错误，原因:{response['message']}")
                 return False
 
-    async def getWFId(self):
+    async def getWFId(self) -> bool:
         url = f"https://api.uyiban.com/officeTask/client/index/detail"
         params = {
             "TaskId":self.unCompletedTaskID,
@@ -397,7 +402,7 @@ class AioYiBan:
                 self.notify(f"未到打卡时间！")
                 return False
 
-    async def isUpdate(self):
+    async def isUpdate(self) -> bool:
         url = f"https://api.uyiban.com/workFlow/c/my/form/{self.WFId}"
         params = {
             "CSRF":self.csrf
@@ -412,7 +417,7 @@ class AioYiBan:
                 self.notify(f"打卡内容已更新，请手动打卡！")
                 return False
 
-    async def formatDate(self):
+    async def formatDate(self) -> None:
         formDataJson = self.result['data']['Initiate']['FormDataJson']
         self.formDataJson = {each['id']: each['value'] for each in formDataJson}
         for each in self.formDataJson:
@@ -423,7 +428,7 @@ class AioYiBan:
         self.extendDataJson['content'][0]['value'] = self.title
 
 
-    async def clockIn(self):
+    async def clockIn(self) -> None:
         url = "https://api.uyiban.com/workFlow/c/my/apply/"
         headers = {
             'origin': 'https://app.uyiban.com',
@@ -448,20 +453,20 @@ class AioYiBan:
         else:
             self.notify(f"未知错误，原因:{response['msg']}")
 
-    async def tryLogin(self):
+    async def tryLogin(self) -> bool:
         if self.dic['account'] != '' and self.dic['password'] != '':
             for count in range(3):
                 try:
                     await asyncio.sleep(random.randint(2,5))    # 随机延时
                     if await self.login():
                         return True
-                except Exception as error:
-                    self.notify(error)
+                except:
+                    continue
             else:
                 self.notify(f"多次请求失败，暂不打卡！")
                 return False
 
-    async def runFun(self):
+    async def runFun(self) -> None:
         await self.getAuthUrl()
         await self.auth()
         if await self.CompletedList():
@@ -485,7 +490,7 @@ class AioYiBan:
         async with aiohttp.ClientSession(cookies={"csrf_token":self.csrf}) as self.sess:
             await self.run()
 
-def readToml():
+def readToml() -> dict:
     try:
         if os.path.exists('YiBan.toml'):
             with open(file='YiBan.toml', mode='r',encoding='gbk') as f:
@@ -494,11 +499,11 @@ def readToml():
                 if dic:
                     return dic
         else:
-            return []
+            return {}
     except Exception as error:
         print(f"toml文件数据导入失败，失败原因:{error}")
 
-def accountEnv():
+def accountEnv() -> list:
     accounts = []
     cookieRegex = re.compile(r'nickname=(?P<nickname>.*?);account=(?P<account>.*?);password=(?P<password>.*?);mail=(?P<mail>.*?);',re.S)
     # if string:=os.getenv(('YbCookie')):   # 3.8.0版本写法
@@ -514,7 +519,7 @@ def accountEnv():
                 })
     return accounts
 
-def adminEnv():
+def adminEnv() -> dict:
     dic = {}
     # 3.8.0版本写法
     # if sendMail:=os.getenv('sendMail'):
@@ -543,7 +548,7 @@ def adminEnv():
             return dic
 
 
-async def asyncMain():
+async def asyncMain() -> None:
     account = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
     admin = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
     # 3.8.0版本写法
@@ -574,7 +579,7 @@ async def asyncMain():
     else:
         print("配置文件与环境变量均无易班账号，取消执行")
 
-def main() -> None:
+def main_handler(event, context) -> None:
     global allMess
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -583,6 +588,9 @@ def main() -> None:
         send('易班校本化打卡',allMess)
     else:
         print(allMess)
+
+def main() -> None:
+    main_handler(None,None)
 
 if __name__ == '__main__':
     main()
