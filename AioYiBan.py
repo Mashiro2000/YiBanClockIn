@@ -266,36 +266,36 @@ class AioYiBan:
         async with await self.sess.get(url=url,params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html',encoding='utf-8')
             await self.joinCookie(aioResponse)
-        if response['code'] == 0:
-                if len(response['data']) > 0:
-                    for sub in response['data']:
-                        if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime())}）":
-                            if DEBUG != True:
-                                self.notify(f"今日已打卡")
-                                return False
-                            else:
-                                self.CompletedTaskID = sub['TaskId']
-                                return True
-                    else:
-                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
-                        if len(dic) == 1:
-                            self.CompletedTaskID  = dic[0]['TaskId']
-                            await asyncio.sleep(0.1)
-                            return True
+            if response['code'] == 0:
+                    if len(response['data']) > 0:
+                        for sub in response['data']:
+                            if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime())}）":
+                                if DEBUG != True:
+                                    self.notify(f"今日已打卡")
+                                    return False
+                                else:
+                                    self.CompletedTaskID = sub['TaskId']
+                                    return True
                         else:
-                            self.notify(f"账号:{self.name}\t存在多个已完成任务且筛选失败，故取消打卡")
-                            return False
-                elif len(response['data']) == 0:
-                    self.notify(f"昨日无打卡任务，历史数据调用失败")
+                            dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title']) !=[]]
+                            if len(dic) == 1:
+                                self.CompletedTaskID  = dic[0]['TaskId']
+                                await asyncio.sleep(0.1)
+                                return True
+                            else:
+                                self.notify(f"账号:{self.name}\t存在多个已完成任务且筛选失败，故取消打卡")
+                                return False
+                    elif len(response['data']) == 0:
+                        self.notify(f"昨日无打卡任务，历史数据调用失败")
+                        return False
+            elif response['code'] == 999:
+                if await self.authYiBan() == True:
                     return False
-        elif response['code'] == 999:
-            if await self.authYiBan() == True:
-                return False
+                else:
+                    self.notify(f"易班授权已过期，尝试授权失败!")
             else:
-                self.notify(f"易班授权已过期，尝试授权失败!")
-        else:
-            self.notify(f"出现错误，原因:{response}")
-            return False
+                self.notify(f"出现错误，原因:{response}")
+                return False
 
     async def authYiBan(self):
         url = 'https://oauth.yiban.cn/code/usersure'
