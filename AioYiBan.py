@@ -17,6 +17,7 @@ import json
 import time
 import base64
 import random
+import logging
 import asyncio
 
 # 邮箱模组
@@ -78,6 +79,12 @@ class AioYiBan:
         self.cookies = {}
         self.cookies.update({"csrf_token":self.csrf})
 
+    async def getName(self):
+        if self.dic['nickname'] != "":
+            self.name = self.dic['nickname']
+        else:
+            self.name =  self.dic['account']
+
     def notify(self,text,isSend=True):
         self.mess += f"{self.name}\t{text}\n"
         if isSend == True:
@@ -85,12 +92,6 @@ class AioYiBan:
                 self.sendMail(text)
             else:
                 print("管理员邮箱未配置或用户未提供邮箱，取消配信")
-
-    async def getName(self):
-        if self.dic['nickname'] != "":
-            self.name = self.dic['nickname']
-        else:
-            self.name =  self.dic['account']
 
     async def encryptPassword(self, pwd):
         #密码加密
@@ -178,8 +179,6 @@ class AioYiBan:
             return print(f"{self.name}\t信件发送成功！\n")
         except Exception as error:
             return print(f"{self.name}\t邮件发送失败!\t失败原因:{error}\n")
-
-
 
     async def joinCookie(self,aioResponse):
         for i in aioResponse.cookies.values():
@@ -580,7 +579,7 @@ def main() -> None:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncMain())
-    if isNotify == True:
+    if isNotify == False:
         send('易班校本化打卡',allMess)
     else:
         print(allMess)
