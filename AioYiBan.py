@@ -131,13 +131,12 @@ class AioYiBan:
     # 邮箱模板以及配信方法
     def sendMail(self,text:str) -> None:
         try:
-            content = f"""<div style="height: ;"></div>
-            <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
+            content = f"""            <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; min-width: 320px;;margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
                 <header style="overflow: hidden;position: relative;">
                 <div style="width: 100%;height: 100%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
                         <img style="width:100%;z-index: 666;height: 100%;box-shadow: 1px;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png">
                 </div>
-                <div style="width: 8%;"><span style="text-align: center;height: 95%;;position: absolute;z-index: 999;;color: #c6c6c6;font-weight: 700;font-size: 12px;width: 32px;top: 0;right: 0;">博士您还有许多事情需要处理现在还不能休息哦</span></div>
+
                 </header>
                 <div style="padding: 5px 20px;position: relative;">
                 <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
