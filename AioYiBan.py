@@ -138,10 +138,11 @@ class AioYiBan:
                         <img style="width:100%;z-index: 666;height: 100%;box-shadow: 1px;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png">
                 </div>
                 </header>
-                
-                <div style="width: 50px;height: 50px;"></div>
-                <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
+                <div style:"position:relative;">
+                  <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
                 <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
+                </div>
+         
                 <br>
                 <div style="border-bottom: 3px solid rgb(116, 116, 243);margin-top: 5px;"></div>
                 <p style="position: relative;color: white;background:#7c7676;padding: 5px 10px;margin: 15px auto 0 ;">泰拉瑞亚是冒险之地！是神秘之地！是可让你塑造、捍卫、享受的大地。在泰拉瑞亚，你有无穷选择。手指发痒的动作游戏迷？建筑大师？收藏家？探险家？每个人都能找到自己想要的。</p>
