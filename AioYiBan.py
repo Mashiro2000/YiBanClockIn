@@ -138,7 +138,7 @@ class AioYiBan:
                         <img style="width:100%;z-index: 666;height: 100%;box-shadow: 1px;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png">
                 </div>
                 </header>
-                <div style:"position:relative;">
+                <div style="position: relative;">
                   <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
                 <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
                 </div>
