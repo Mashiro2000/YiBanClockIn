@@ -139,6 +139,7 @@ class AioYiBan:
 
                 </header>
                 <div style="padding: 5px 20px;position: relative;">
+                <div></div>
                 <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
                 <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
                 <br>
@@ -150,8 +151,8 @@ class AioYiBan:
                             <p style="text-align: center;color:skyblue;font-weight: 700;font-size: 15px;">博士,“随我走吧，回到我们永恒的故乡。” </p>
                             <div style="width: 100%;">
                               <span style="font-size: 20px; color: black;text-shadow: 1px 1px 1px #f35e31;width: 50%;">Date：</span>{time.strftime('%Y-%m-%d',time.localtime())}
-                              <span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;"">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}
                             </div>
+                            <div><span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;"">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}</div>
 
                     </div>
                       <div style="width: 45%;float: right;margin-top: 18.5px;">
