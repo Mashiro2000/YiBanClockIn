@@ -70,7 +70,7 @@ allMess = f"任务:校本化打卡\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',ti
 
 class AioYiBan:
     # 构造函数
-    def __init__(self,dic:dict[str],admin:dict[str]) -> None:
+    def __init__(self,dic:dict,admin:dict) -> None:
         self.dic = dic
         self.admin = admin
         self.mess = ''
@@ -283,7 +283,7 @@ class AioYiBan:
                                 self.CompletedTaskID = sub['TaskId']
                                 return True
                     else:
-                        dic:list = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
+                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
                         if len(dic) == 1:
                             self.CompletedTaskID  = dic[0]['TaskId']
                             return True
@@ -503,7 +503,7 @@ def readToml() -> dict:
         print(f"toml文件数据导入失败，失败原因:{error}")
 
 def accountEnv() -> list:
-    accounts:list[dict] = []
+    accounts = []
     cookieRegex = re.compile(r'nickname=(?P<nickname>.*?);account=(?P<account>.*?);password=(?P<password>.*?);mail=(?P<mail>.*?);',re.S)
     # if string:=os.getenv(('YbCookie')):   # 3.8.0版本写法
     string = os.getenv(('YbCookie'))        # 3.6.8版本写法
@@ -519,7 +519,7 @@ def accountEnv() -> list:
     return accounts
 
 def adminEnv() -> dict:
-    dic:dict[str] = {}
+    dic = {}
     # 3.8.0版本写法
     # if sendMail:=os.getenv('sendMail'):
     #     dic['sendMail'] = sendMail
@@ -548,8 +548,8 @@ def adminEnv() -> dict:
 
 
 async def asyncMain() -> None:
-    account:list[dict] = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
-    admin:dict[str] = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
+    account = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
+    admin = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
     # 3.8.0版本写法
     # if data := readToml():              # 读取配置文件中的account以及admin字段
     #     account = data['account']
@@ -584,7 +584,7 @@ def main_handler(event, context) -> None:
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncMain())
     if isNotify == True:
-        send(title='易班校本化打卡',content=allMess)
+        send('易班校本化打卡',allMess)
     else:
         print(allMess)
 
