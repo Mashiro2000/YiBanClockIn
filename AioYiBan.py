@@ -70,7 +70,7 @@ allMess = f"任务:校本化打卡\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',ti
 
 class AioYiBan:
     # 构造函数
-    def __init__(self,dic:dict,admin:dict) -> None:
+    def __init__(self,dic:dict[str],admin:dict[str]) -> None:
         self.dic = dic
         self.admin = admin
         self.mess = ''
@@ -131,18 +131,17 @@ class AioYiBan:
     # 邮箱模板以及配信方法
     def sendMail(self,text:str) -> None:
         try:
-            content = f"""
-            <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; min-width: 320px;;margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
+            content = f"""<div style="height: ;"></div>
+            <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
                 <header style="overflow: hidden;position: relative;">
-                <div style="width: 100%;height: 100%;max-height:40%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
+                <div style="width: 100%;height: 100%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
                         <img style="width:100%;z-index: 666;height: 100%;box-shadow: 1px;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png">
                 </div>
+                <div style="width: 8%;"><span style="text-align: center;height: 95%;;position: absolute;z-index: 999;;color: #c6c6c6;font-weight: 700;font-size: 12px;width: 32px;top: 0;right: 0;">博士您还有许多事情需要处理现在还不能休息哦</span></div>
                 </header>
-                <div style="position: relative;">
-                  <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
+                <div style="padding: 5px 20px;position: relative;">
+                <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
                 <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
-                </div>
-         
                 <br>
                 <div style="border-bottom: 3px solid rgb(116, 116, 243);margin-top: 5px;"></div>
                 <p style="position: relative;color: white;background:#7c7676;padding: 5px 10px;margin: 15px auto 0 ;">泰拉瑞亚是冒险之地！是神秘之地！是可让你塑造、捍卫、享受的大地。在泰拉瑞亚，你有无穷选择。手指发痒的动作游戏迷？建筑大师？收藏家？探险家？每个人都能找到自己想要的。</p>
@@ -152,8 +151,8 @@ class AioYiBan:
                             <p style="text-align: center;color:skyblue;font-weight: 700;font-size: 15px;">博士,“随我走吧，回到我们永恒的故乡。” </p>
                             <div style="width: 100%;">
                               <span style="font-size: 20px; color: black;text-shadow: 1px 1px 1px #f35e31;width: 50%;">Date：</span>{time.strftime('%Y-%m-%d',time.localtime())}
+                              <span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;"">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}
                             </div>
-                            <div><span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;"">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}</div>
 
                     </div>
                       <div style="width: 45%;float: right;margin-top: 18.5px;">
@@ -284,7 +283,7 @@ class AioYiBan:
                                 self.CompletedTaskID = sub['TaskId']
                                 return True
                     else:
-                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
+                        dic:list = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
                         if len(dic) == 1:
                             self.CompletedTaskID  = dic[0]['TaskId']
                             return True
@@ -504,7 +503,7 @@ def readToml() -> dict:
         print(f"toml文件数据导入失败，失败原因:{error}")
 
 def accountEnv() -> list:
-    accounts = []
+    accounts:list[dict] = []
     cookieRegex = re.compile(r'nickname=(?P<nickname>.*?);account=(?P<account>.*?);password=(?P<password>.*?);mail=(?P<mail>.*?);',re.S)
     # if string:=os.getenv(('YbCookie')):   # 3.8.0版本写法
     string = os.getenv(('YbCookie'))        # 3.6.8版本写法
@@ -520,7 +519,7 @@ def accountEnv() -> list:
     return accounts
 
 def adminEnv() -> dict:
-    dic = {}
+    dic:dict[str] = {}
     # 3.8.0版本写法
     # if sendMail:=os.getenv('sendMail'):
     #     dic['sendMail'] = sendMail
@@ -549,8 +548,8 @@ def adminEnv() -> dict:
 
 
 async def asyncMain() -> None:
-    account = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
-    admin = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
+    account:list[dict] = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
+    admin:dict = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
     # 3.8.0版本写法
     # if data := readToml():              # 读取配置文件中的account以及admin字段
     #     account = data['account']
@@ -585,7 +584,7 @@ def main_handler(event, context) -> None:
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncMain())
     if isNotify == True:
-        send('易班校本化打卡',allMess)
+        send(title='易班校本化打卡',content=allMess)
     else:
         print(allMess)
 
