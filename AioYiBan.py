@@ -549,7 +549,7 @@ def adminEnv() -> dict:
 
 async def asyncMain() -> None:
     account:list[dict] = []                        # 提前声明账号列表，如若配置文件不存在，也有现成列表可供追加
-    admin:dict = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
+    admin:dict[str] = {}                          # 提前声明账号列表，如若配置文件和环境变量均不存在，也应提供一个空字典
     # 3.8.0版本写法
     # if data := readToml():              # 读取配置文件中的account以及admin字段
     #     account = data['account']
