@@ -52,7 +52,6 @@ ql repo https://github.com/Mashiro2000/YiBanClockIn.git "" "images|notify"
 > 账号信息
 名称:YbCookie
 值:nickname=XXX;account=11111111111;password=thisISPassword;mail=2222222222@qq.com;
-注:如使用环境变量，请确保`值`字段不包含`&`符号，否则将导致脚本失效(环多个境变量以`&`隔开)
 -----------------------------------------------------------------------------------
 > 发送人邮箱
 名称:sendMail
@@ -70,6 +69,8 @@ ql repo https://github.com/Mashiro2000/YiBanClockIn.git "" "images|notify"
 名称:port
 值:465                     # 25端口(简单邮箱传输协议),465端口(安全的邮箱传输协议)
 ```
+
+> 注:如使用环境变量，请确保`值`字段不包含`&`符号，否则将导致脚本失效(环多个境变量以`&`隔开)
 
 ## 个人通知邮箱
 感谢舍友[@QingYi202](https://github.com/QingYi202)提供的邮箱模板
