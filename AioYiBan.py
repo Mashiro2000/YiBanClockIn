@@ -93,7 +93,7 @@ class AioYiBan:
             if all(self.admin.values()) and self.dic['mail']:
                 self.sendMail(text)
             else:
-                print("管理员邮箱未配置或用户未提供邮箱，取消配信")
+                print(f"{self.name}\t管理员邮箱未配置或用户未提供邮箱，取消配信")
 
     # 密码加密
     async def encryptPassword(self, pwd:str) -> str:
@@ -234,10 +234,10 @@ class AioYiBan:
         }
         async with await self.sess.get(url=f"https://f.yiban.cn/iapp7463",headers=header,allow_redirects=False) as aioResponse1:
             await self.joinCookie(aioResponse1)
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.3)
             async with await self.sess.get(url=url,params=params,headers=header,allow_redirects=False) as aioResponse2:
                 await self.joinCookie(aioResponse2)
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.3)
                 self.verify = aioResponse2.headers['Location']
                 self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
 
