@@ -558,7 +558,7 @@ async def asyncMain() -> None:
     #     account.extend(data)
     # if data:=adminEnv():                # 如果环境变量存在邮箱参数，则替换，环境变量优先级高于配置文件
     #     admin = data
-    # 3.8.0版本写法
+    # 3.6.8版本写法
     data = readToml()
     if data:
         account = data['account']
