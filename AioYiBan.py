@@ -277,7 +277,10 @@ class AioYiBan:
                     for sub in response['data']:
                         if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime())}）":
                             if DEBUG != True:
-                                self.notify(f"今日已打卡")
+                                if self.admin['repeat'] == 'true':
+                                    self.notify(f"今日已打卡")
+                                else
+                                    self.notify(f"今日已打卡",isSend=False)
                                 return False
                             else:
                                 self.CompletedTaskID = sub['TaskId']
@@ -529,6 +532,8 @@ def adminEnv() -> dict:
     #     dic['smtpServer'] = smtpServer
     # if port:=os.getenv('port'):
     #     dic['port'] = port
+    # if repeat:=os.getenv('repeat'):
+    #     dic['repeat'] = repeat
     # 3.6.8版本写法
     sendMail = os.getenv('sendMail')
     if sendMail:
@@ -542,6 +547,9 @@ def adminEnv() -> dict:
     port = os.getenv('port')
     if port:
         dic['port'] = port
+    repeat = os.getenv('repeat')
+    if repeat:
+        dic['repeat'] = repeat
     if dic != {}:
         if all(dic.values()):
             return dic
