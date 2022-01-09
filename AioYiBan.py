@@ -279,7 +279,7 @@ class AioYiBan:
                             if DEBUG != True:
                                 if self.admin['repeat'] == 'true':
                                     self.notify(f"今日已打卡")
-                                else
+                                else:
                                     self.notify(f"今日已打卡",isSend=False)
                                 return False
                             else:
