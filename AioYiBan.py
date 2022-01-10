@@ -496,7 +496,7 @@ class AioYiBan:
 def readToml() -> dict:
     tomlFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'YiBan.toml')
     try:
-        if os.path.exists('YiBan.toml'):
+        if os.path.exists(tomlFile):
                 # if dic := tomli.load(open(tomlFile,'rb')):   # 3.8.0版本写法
                 dic = tomli.load(open(tomlFile,'rb'))          # 3.6.8版本写法
                 if dic:
