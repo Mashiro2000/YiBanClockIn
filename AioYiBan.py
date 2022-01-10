@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 """
-cron:  10 14 * * * AioYiBan.py
+cron:  20,25 14 * * * AioYiBan.py
 new Env('校本化打卡');
 """
 
