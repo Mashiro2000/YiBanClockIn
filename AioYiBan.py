@@ -132,46 +132,51 @@ class AioYiBan:
     def sendMail(self,text:str) -> None:
         try:
             content = f"""
-            <div style="background:linear-gradient(to right,#cccc,white);; width: 95%; max-width: 800px; min-width: 320px;;margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18); font-family : YouYuan;">
-                <header style="overflow: hidden;position: relative;">
-                <div style="width: 100%;height: 100%;max-height:40%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
-                        <img style="width:100%;z-index: 666;height: 100%;box-shadow: 1px;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png">
+                <div style="width: 50%;float: left;visibility: hidden;">
+                    <p style="font-size: 1px;">UID:{self.name}</p>
                 </div>
-                </header>
-                <div style="position: relative;">
-                  <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
-                <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
+                <div style="width: 50%;float: left;visibility: hidden;">
+                    <p style="font-size: 1px;">打卡状态:{text}</p>
                 </div>
-         
-                <br>
-                <div style="border-bottom: 3px solid rgb(116, 116, 243);margin-top: 5px;"></div>
-                <p style="position: relative;color: white;background:#7c7676;padding: 5px 10px;margin: 15px auto 0 ;">泰拉瑞亚是冒险之地！是神秘之地！是可让你塑造、捍卫、享受的大地。在泰拉瑞亚，你有无穷选择。手指发痒的动作游戏迷？建筑大师？收藏家？探险家？每个人都能找到自己想要的。</p>
-                    <div style="float:left; width:50%;margin-top: 18.5px;">
-                       <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/skd.png" alt="" style="border-radius: 30px;width: 100%;">
-                        <div></div>
-                            <p style="text-align: center;color:skyblue;font-weight: 700;font-size: 15px;">博士,“随我走吧，回到我们永恒的故乡。” </p>
-                            <div style="width: 100%;">
-                              <span style="font-size: 20px; color: black;text-shadow: 1px 1px 1px #f35e31;width: 50%;">Date：</span>{time.strftime('%Y-%m-%d',time.localtime())}
-                            </div>
-                            <div><span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;"">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}</div>
-                    </div>
-                      <div style="width: 45%;float: right;margin-top: 18.5px;">
-                        <span  style="font-weight: 700;">刀客塔今日课题：</span><br>
-                        <span>UID:<font style="text-decoration: none;color: orange;text-align: left;">{self.name}</font> <br>状态:<font style="text-decoration: none;color: orange ">{text}</font></span>
-                        <div style="margin-top: 12px;">
-                               <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a1.jpg" alt="" style="width: 45%; max-width: 100px;border-top-left-radius: 40px;">
-                               <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a2.jpg" alt="" style="width:45%; max-width: 100px;border-top-right-radius: 40px;"><br>
-                               <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a3.jpg" alt="" style="width:45%; max-width: 100px;border-bottom-left-radius: 40px;">
-                               <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a4.jpg" alt="" style="width: 45%; max-width: 100px;border-bottom-right-radius: 40px;">
+                <div style="background:linear-gradient(to right,#cccc,white); width: 95%; max-width: 800px; min-width: 320px;;margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.12); box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.18); font-family : YouYuan,emoji;">
+                    <header style="overflow: hidden;position: relative;">
+                        <div style="width: 100%;height: 100%;max-height:40%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
+                            <img style="width:100%;z-index: 666;height: 100%;" src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/aml.png" alt="">
                         </div>
-                      </div>
-                    </div>    
-               <div style="clear:both;margin-bottom: 10px;"></div>
-               <div class="footer" style="text-align: center;"><img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/233.jpg" alt="" style="width: 90%;"></div>
-                <p style="font-size: 12px;text-align: center;color: #999;">本邮件由可露希尔酱发出。<br>
-                Copyright &copy; 2021 <a style="text-decoration:none; color: #66ccff;" target="_blank" href="https://github.com/Mashiro2000/YiBanClockIn">Mashiro2000</a> Rhode Island</p>
+                    </header>
+                    <div style="position: relative;">
+                        <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
+                        <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
+                    </div>
+
+                    <br />
+                    <div style="border-bottom: 3px solid rgb(116, 116, 243);margin-top: 5px;"></div>
+                    <p style="position: relative;color: white;background:#7c7676;padding: 5px 10px;margin: 15px auto 0 ;">泰拉瑞亚是冒险之地！是神秘之地！是可让你塑造、捍卫、享受的大地。在泰拉瑞亚，你有无穷选择。手指发痒的动作游戏迷？建筑大师？收藏家？探险家？每个人都能找到自己想要的。</p>
+                    <div style="float:left; width:50%;margin-top: 19px;">
+                        <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/skd.png" alt="" style="border-radius: 30px;width: 100%;">
+                        <div></div>
+                        <p style="text-align: center;color:skyblue;font-weight: 700;font-size: 15px;">博士,“随我走吧，回到我们永恒的故乡。” </p>
+                        <div style="width: 100%;">
+                            <span style="font-size: 20px; color: black;text-shadow: 1px 1px 1px #f35e31;width: 50%;">Date：</span>{time.strftime('%Y-%m-%d',time.localtime())}
+                        </div>
+                        <div><span style="font-size: 20px; color:black;text-shadow: 1px 1px 1px #f35e31;width: 50%;">Time：</span>{time.strftime('%H:%M:%S',time.localtime())}</div>
+                    </div>
+                    <div style="width: 45%;float: right;margin-top: 19px;">
+                        <span  style="font-weight: 700;">刀客塔今日课题：</span><br />
+                        <span>UID:<span
+                                style="text-decoration: none;color: orange;text-align: left;">{self.name}</span> <br />状态:<span style="text-decoration: none;color: orange ">{text}</span></span>
+                        <div style="margin-top: 12px;">
+                            <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a1.jpg" alt="" style="width: 45%; max-width: 100px;border-top-left-radius: 40px;">
+                            <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a2.jpg" alt="" style="width:45%; max-width: 100px;border-top-right-radius: 40px;"><br/>
+                            <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a3.jpg" alt="" style="width:45%; max-width: 100px;border-bottom-left-radius: 40px;">
+                            <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/a4.jpg" alt="" style="width: 45%; max-width: 100px;border-bottom-right-radius: 40px;">
+                        </div>
+                    </div>
                 </div>
-                </div>
+                <div style="clear:both;margin-bottom: 10px;"></div>
+                <div class="footer" style="text-align: center;"><img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/233.jpg" alt="" style="width: 90%;"></div>
+                <p style="font-size: 12px;text-align: center;color: #999;">本邮件由可露希尔酱发出。<br />
+                    Copyright &copy; 2021 <a style="text-decoration:none; color: #6cf;" target="_blank" href="https://github.com/Mashiro2000/YiBanClockIn">Mashiro2000</a> Rhode Island</p>
                     """
             msg= MIMEText(content, 'html', 'utf-8')
             msg['From']=formataddr(("no-reply",self.admin['sendMail']))                 # 括号里的对应发件人邮箱昵称、发件人邮箱账号
