@@ -175,9 +175,9 @@ class AioYiBan:
             </div>
 
             <div style="clear:both;margin-bottom: 10px;"></div>
-            <div class="footer" style="text-align: center;"><img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/233.jpg" alt="" style="width: 90%;"></div>
+            <div style="text-align: center;"><img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/233.jpg" alt="" style="width: 90%;"></div>
             <p style="font-size: 12px;text-align: center;color: #999;">本邮件由可露希尔酱发出。<br />
-                Copyright &copy; 2021 <a style="text-decoration:none; color: #6cf;" target="_blank" href="https://github.com/Mashiro2000/YiBanClockIn">Mashiro2000</a> Rhode Island</p>
+                Copyright &copy; 2022 <a style="text-decoration:none; color: #6cf;" target="_blank" href="https://github.com/Mashiro2000/YiBanClockIn">Mashiro2000</a> Rhode Island</p>
                     """
             msg= MIMEText(content, 'html', 'utf-8')
             msg['From']=formataddr(("no-reply",self.admin['sendMail']))                 # 括号里的对应发件人邮箱昵称、发件人邮箱账号
