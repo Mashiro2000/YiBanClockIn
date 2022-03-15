@@ -464,7 +464,7 @@ class AioYiBan:
 
     async def tryLogin(self) -> bool:
         if self.dic['account'] != '' and self.dic['password'] != '':
-            for count in range(3):
+            for _ in range(3):
                 try:
                     await asyncio.sleep(random.randint(2,5))    # 随机延时
                     if await self.login():
