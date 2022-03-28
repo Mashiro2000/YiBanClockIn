@@ -240,10 +240,10 @@ class AioYiBan:
         }
         async with await self.sess.get(url=f"https://f.yiban.cn/iapp7463",headers=header,allow_redirects=False) as aioResponse1:
             await self.joinCookie(aioResponse1)
-            await asyncio.sleep(0.3)
+            await asyncio.sleep(0.5)
             async with await self.sess.get(url=url,params=params,headers=header,allow_redirects=False) as aioResponse2:
                 await self.joinCookie(aioResponse2)
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(0.5)
                 self.verify = aioResponse2.headers['Location']
                 self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
 
