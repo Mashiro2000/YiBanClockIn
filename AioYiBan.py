@@ -13,11 +13,14 @@ new Env('校本化打卡');
 # 系统自带库
 import os
 import re
+import sys
 import json
 import time
+import shlex
 import base64
 import random
 import asyncio
+import subprocess
 
 # 邮箱模组
 import smtplib
@@ -25,34 +28,39 @@ from email.mime.text import MIMEText
 from email.utils import formataddr
 
 # 第三方库
+moduleFlag = False
 try:
     import tomli
 except ModuleNotFoundError:
-    print("缺少tomli依赖！请手动安装")
-    print("命令:pip3 install tomli -i https://pypi.tuna.tsinghua.edu.cn/simple")
-    exit(1)
+    print("缺少tomli依赖！尝试安装")
+    subprocess.run(shlex.split('pip3 install tomli -i https://pypi.tuna.tsinghua.edu.cn/simple'), shell=True, text=True)
+    moduleFlag = True
 
 try:
     import aiohttp
 except ModuleNotFoundError:
-    print("缺少aiohttp依赖！请手动安装")
-    print("命令:pip3 install aiohttp -i https://pypi.tuna.tsinghua.edu.cn/simple")
-    exit(1)
+    print("缺少aiohttp依赖！尝试安装")
+    subprocess.run(shlex.split('pip3 install aiohttp -i https://pypi.tuna.tsinghua.edu.cn/simple'), shell=True, text=True)
+    moduleFlag = True
 
 try:
     import requests
 except ModuleNotFoundError:
-    print("缺少requests依赖！请手动安装!")
-    print("命令:pip3 install requests -i https://pypi.tuna.tsinghua.edu.cn/simple")
-    exit(1)
+    print("缺少requests依赖！尝试安装!")
+    subprocess.run(shlex.split('pip3 install requests -i https://pypi.tuna.tsinghua.edu.cn/simple'), shell=True, text=True)
+    moduleFlag = True
 
 try:
     from Crypto.Cipher import AES,PKCS1_v1_5
     from Crypto.PublicKey import RSA
 except ModuleNotFoundError:
-    print("缺少pycryptodome依赖！请手动安装")
-    print("命令:pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple")
-    exit(1)
+    print("缺少pycryptodome依赖！尝试安装")
+    subprocess.run(shlex.split('pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple'), shell=True, text=True)
+    moduleFlag = True
+
+if moduleFlag is True:
+    subprocess.run([f'{sys.executable}', f'{__file__}'])
+    exit(0)
 
 # 配信文件
 try:
@@ -89,7 +97,7 @@ class AioYiBan:
     # 个体邮件通知
     def notify(self,text:str,isSend:bool=True) -> None:
         self.mess += f"{self.name}\t{text}\n"
-        if isSend == True:
+        if isSend is True:
             if all(self.admin.values()) and self.dic['mail']:
                 self.sendMail(text)
             else:
@@ -332,7 +340,7 @@ class AioYiBan:
                     self.notify(f"昨日无打卡任务，历史数据调用失败")
                     return False
             elif response['code'] == 999:
-                if await self.authYiBan() == True:
+                if await self.authYiBan() is True:
                     return False
                 else:
                     self.notify(f"易班授权已过期，尝试授权失败!")
@@ -363,7 +371,7 @@ class AioYiBan:
             await asyncio.sleep(0.1)
 
     async def unCompletedList(self) -> bool:
-        if DEBUG == True:
+        if DEBUG is True:
             self.unCompletedTaskID = self.CompletedTaskID
             return True
         today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
@@ -602,7 +610,7 @@ def main_handler(event, context) -> None:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncMain())
-    if isNotify == True:
+    if isNotify is True:
         send('易班校本化打卡',allMess)
     else:
         print(allMess)
