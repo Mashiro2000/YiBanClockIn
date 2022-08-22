@@ -138,7 +138,6 @@ class AioYiBan:
             <div style="width: 50%;float: left;visibility: hidden;">
                 <p style="font-size: 1px;">打卡状态:{text}</p>
             </div>
-
             <div style="background:linear-gradient(to right,#cccc,white); width: 95%; max-width: 800px; min-width: 320px;;margin: auto auto; border-radius: 5px; border:skyblue 2px solid; overflow: hidden; -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.12); box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.18); font-family : YouYuan,emoji;">
                 <header style="overflow: hidden;position: relative;">
                     <div style="width: 100%;height: 100%;max-height:40%;box-shadow: 5px 5px 3px rgba(131, 89, 89, 0.3);text-align: center;">
@@ -149,7 +148,6 @@ class AioYiBan:
                     <img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/rll.gif" alt="" style="width:20px;position: absolute;top: 0;right: 20px;">
                     <p style="position: relative;color: white;float: left;z-index: 999;background: #7c7676;padding: 5px 30px;margin: -25px auto 0 ;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.30)">Arknights</p>
                 </div><br />
-
                 <div style="border-bottom: 3px solid rgb(116, 116, 243);margin-top: 5px;"></div>
                 <p style="position: relative;color: white;background:#7c7676;padding: 5px 10px;margin: 15px auto 0 ;">泰拉瑞亚是冒险之地！是神秘之地！是可让你塑造、捍卫、享受的大地。在泰拉瑞亚，你有无穷选择。手指发痒的动作游戏迷？建筑大师？收藏家？探险家？每个人都能找到自己想要的。</p>
                 <div style="float:left; width:50%;margin-top: 19px;">
@@ -173,7 +171,6 @@ class AioYiBan:
                     </div>
                 </div>
             </div>
-
             <div style="clear:both;margin-bottom: 10px;"></div>
             <div style="text-align: center;"><img src="https://cdn.jsdelivr.net/gh/Mashiro2000/YiBanClockIn@main/images/233.jpg" alt="" style="width: 90%;"></div>
             <p style="font-size: 12px;text-align: center;color: #999;">本邮件由可露希尔酱发出。<br />
@@ -197,7 +194,14 @@ class AioYiBan:
             self.cookies.update({ckList[0]: ckList[-1]})
 
     async def login(self) -> bool:
+        '''
         url = "https://mobile.yiban.cn/api/v4/passport/login"
+        header= {
+            'Origin': 'https://mobile.yiban.cn',
+            'User-Agent': 'YiBan/5.0.4 Mozilla/5.0 (Linux; Android 7.1.2; V1938T Build/N2G48C; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.70 Safari/537.36',
+            'Referer': 'https://mobile.yiban.cn',
+            'AppVersion': '5.0.4'
+        }
         data = {
             "device": "HUAWEI",
             "v": "5.0.4",
@@ -211,18 +215,22 @@ class AioYiBan:
             "apn": "wifi",
             "authCode": "",
             "sig": "934932a8993b5e23"
-        }
+        }'''
+        # 登录接口取自于: https://github.com/Sricor/yiban/blob/main/yiban/Core/Login.py#L68
+        url = "https://www.yiban.cn/login/doLoginAjax"
         header= {
-            'Origin': 'https://mobile.yiban.cn',
-            'User-Agent': 'YiBan/5.0.4 Mozilla/5.0 (Linux; Android 7.1.2; V1938T Build/N2G48C; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.70 Safari/537.36',
-            'Referer': 'https://mobile.yiban.cn',
-            'AppVersion': '5.0.4'
+            "User-Agent": "Yiban",
+            "AppVersion": "5.0.12"
+        }
+        data = {
+            'account': self.dic['account'],
+            'password': self.dic['password']
         }
         async with await self.sess.post(url=url, data=data, headers=header) as aioResponse:
             response = await aioResponse.json()
             await self.joinCookie(aioResponse)
-            if response['response'] == 100:
-                self.access_token = response['data']['access_token']
+            if response['code'] == 200:
+                self.access_token = self.cookies.get('yiban_user_token')
                 await asyncio.sleep(0.1)
                 return True
             else:
@@ -230,22 +238,18 @@ class AioYiBan:
                 return False
 
     async def getAuthUrl(self) -> None:
-        url = "https://f.yiban.cn/iapp/index"
+        url = 'http://f.yiban.cn/iframe/index'
         params = {
             "act":"iapp7463"
         }
         header = {
-            "authorization": f"Bearer {self.access_token}",
-            "logintoken": self.access_token
+            "yiban_user_token": self.access_token
         }
-        async with await self.sess.get(url=f"https://f.yiban.cn/iapp7463",headers=header,allow_redirects=False) as aioResponse1:
-            await self.joinCookie(aioResponse1)
-            await asyncio.sleep(0.5)
-            async with await self.sess.get(url=url,params=params,headers=header,allow_redirects=False) as aioResponse2:
-                await self.joinCookie(aioResponse2)
-                await asyncio.sleep(0.5)
-                self.verify = aioResponse2.headers['Location']
-                self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
+        cookies={'yiban_user_token':self.access_token}
+        async with await self.sess.get(url=url,params=params,headers=header,cookies=cookies,allow_redirects=False) as aioResponse:
+            await self.joinCookie(aioResponse)
+            self.verify = aioResponse.headers.get('Location')
+            self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
 
 
     async def auth(self) -> None:
@@ -261,55 +265,9 @@ class AioYiBan:
             "CSRF":self.csrf
         }
         async with await self.sess.get(url=url, params=params) as aioResponse:
-            await aioResponse.read()
+            await aioResponse.json(content_type='text/html',encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
-
-    async def CompletedList(self) -> bool:
-        yesterday = time.strftime("%Y-%m-%d", time.localtime(time.time() - 86400))
-        today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
-        url = f"https://api.uyiban.com/officeTask/client/index/completedList"
-        params = {
-            'StartTime': f"{yesterday} 00:00",
-            'EndTime': f"{today} 23:00",
-            'CSRF': self.csrf
-        }
-        async with await self.sess.get(url=url,params=params) as aioResponse:
-            response = await aioResponse.json(content_type='text/html',encoding='utf-8')
-            await self.joinCookie(aioResponse)
-            await asyncio.sleep(0.1)
-            if response['code'] == 0:
-                if len(response['data']) > 0:
-                    for sub in response['data']:
-                        if sub['Title'] == f"学生每日健康打卡({time.strftime('%Y-%m-%d', time.localtime())}）":
-                            if DEBUG != True:
-                                if self.admin['repeat'] == 'true':
-                                    self.notify(f"今日已打卡")
-                                else:
-                                    self.notify(f"今日已打卡",isSend=False)
-                                return False
-                            else:
-                                self.CompletedTaskID = sub['TaskId']
-                                return True
-                    else:
-                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time() - 86400))}）",content['Title'])]
-                        if len(dic) == 1:
-                            self.CompletedTaskID  = dic[0]['TaskId']
-                            return True
-                        else:
-                            self.notify(f"账号:{self.name}\t存在多个已完成任务且筛选失败，故取消打卡")
-                            return False
-                elif len(response['data']) == 0:
-                    self.notify(f"昨日无打卡任务，历史数据调用失败")
-                    return False
-            elif response['code'] == 999:
-                if await self.authYiBan() == True:
-                    return False
-                else:
-                    self.notify(f"易班授权已过期，尝试授权失败!")
-            else:
-                self.notify(f"出现错误，原因:{response}")
-                return False
 
     async def authYiBan(self) -> bool:
         url = 'https://oauth.yiban.cn/code/usersure'
@@ -329,11 +287,57 @@ class AioYiBan:
         async with await self.sess.post(url=url,headers=headers,data=data) as aioResponse:
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
-            response = aioResponse.status
-            if response == 200:
+            await aioResponse.json(content_type='text/html', encoding='utf-8')
+            if aioResponse.status == 200:
                 await self.runFun()
                 return True
             else:
+                return False
+
+    async def CompletedList(self) -> bool:
+        yesterday = time.strftime("%Y-%m-%d", time.localtime(time.time() - 86400))
+        today = time.strftime("%Y-%m-%d", time.localtime(time.time()))
+        url = f"https://api.uyiban.com/officeTask/client/index/completedList"
+        params = {
+            'StartTime': f"{yesterday} 00:00",
+            'EndTime': f"{today} 23:00",
+            'CSRF': self.csrf
+        }
+        async with await self.sess.get(url=url,params=params) as aioResponse:
+            response = await aioResponse.json(content_type='text/html',encoding='utf-8')
+            await self.joinCookie(aioResponse)
+            await asyncio.sleep(0.1)
+            if response['code'] == 0:
+                if len(response['data']) > 0:
+                    for sub in response['data']:
+                        if sub['Title'] == f"学生每日健康打卡({today}）":
+                            if DEBUG != True:
+                                if self.admin['repeat'] == 'true':
+                                    self.notify(f"今日已打卡")
+                                else:
+                                    self.notify(f"今日已打卡",isSend=False)
+                                return False
+                            else:
+                                self.CompletedTaskID = sub['TaskId']
+                                return True
+                    else:
+                        dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({yesterday}）",content['Title'])]
+                        if len(dic) == 1:
+                            self.CompletedTaskID  = dic[0]['TaskId']
+                            return False
+                        else:
+                            self.notify(f"账号:{self.name}\t存在多个已完成任务且筛选失败，故取消打卡")
+                            return False
+                elif len(response['data']) == 0:
+                    self.notify(f"昨日无打卡任务，历史数据调用失败")
+                    return False
+            elif response['code'] == 999:
+                if await self.authYiBan() == True:
+                    return False
+                else:
+                    self.notify(f"易班授权已过期，尝试授权失败!")
+            else:
+                self.notify(f"出现错误，原因:{response}")
                 return False
 
     async def getInitiateId(self) -> None:
@@ -382,7 +386,7 @@ class AioYiBan:
                     self.notify(f"任务未发布，故不继续执行！")
                     return False
                 elif len(response['data']) > 1:
-                    dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({time.strftime('%Y-%m-%d', time.localtime(time.time()))}）",content['Title']) !=[]]
+                    dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({today}）",content['Title']) !=[]]
                     if len(dic) == 1:
                         self.unCompletedTaskID  = dic[0]['TaskId']
                         return True
@@ -503,10 +507,10 @@ def readToml() -> dict:
     tomlFile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'YiBan.toml')
     try:
         if os.path.exists(tomlFile):
-                # if dic := tomli.load(open(tomlFile,'rb')):   # 3.8.0版本写法
-                dic = tomli.load(open(tomlFile,'rb'))          # 3.6.8版本写法
-                if dic:
-                    return dic
+            # if dic := tomli.load(open(tomlFile,'rb')):   # 3.8.0版本写法
+            dic = tomli.load(open(tomlFile,'rb'))          # 3.6.8版本写法
+            if dic:
+                return dic
         else:
             return {}
     except Exception as error:
