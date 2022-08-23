@@ -15,8 +15,8 @@ import os
 import re
 import sys
 import json
-import time
 import shlex
+import time
 import base64
 import random
 import asyncio
@@ -332,7 +332,7 @@ class AioYiBan:
                         dic = [content for content in response['data'] if re.findall(f"学生每日健康打卡\({yesterday}）",content['Title'])]
                         if len(dic) == 1:
                             self.CompletedTaskID  = dic[0]['TaskId']
-                            return False
+                            return True
                         else:
                             self.notify(f"账号:{self.name}\t存在多个已完成任务且筛选失败，故取消打卡")
                             return False
