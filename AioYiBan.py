@@ -320,7 +320,7 @@ class AioYiBan:
                     for sub in response['data']:
                         if sub['Title'] == f"学生每日健康打卡({today}）":
                             if DEBUG != True:
-                                if self.admin['repeat'] == 'true':
+                                if self.admin.get('repeat',False) == 'true':
                                     self.notify(f"今日已打卡")
                                 else:
                                     self.notify(f"今日已打卡",isSend=False)
