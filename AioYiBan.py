@@ -90,6 +90,7 @@ allMess = f"任务:校本化打卡\n时间:{time.strftime('%Y-%m-%d %H:%M:%S', t
 class AioYiBan:
     # 构造函数
     def __init__(self, dic: dict, admin: dict) -> None:
+        self.CompletedTaskID = None
         self.dic = dic
         self.admin = admin
         self.mess = ''
@@ -106,9 +107,9 @@ class AioYiBan:
             self.name = self.dic['account']
 
     # 个体邮件通知
-    def notify(self, text: str, isSend: bool = True) -> None:
+    def notify(self, text: str, is_send: bool = True) -> None:
         self.mess += f"{self.name}\t{text}\n"
-        if isSend is True:
+        if is_send is True:
             if all(self.admin.values()) and self.dic['mail']:
                 self.sendMail(text)
             else:
@@ -245,7 +246,7 @@ class AioYiBan:
             'account': self.dic['account'],
             'password': self.dic['password']
         }
-        async with await self.sess.post(url=url, data=data, headers=header) as aioResponse:
+        async with self.sess.post(url=url, data=data, headers=header) as aioResponse:
             response = await aioResponse.json()
             await self.joinCookie(aioResponse)
             if response['code'] == 200:
@@ -253,7 +254,7 @@ class AioYiBan:
                 await asyncio.sleep(0.1)
                 return True
             else:
-                self.notify(f"登录失败", isSend=False)
+                self.notify(f"登录失败", is_send=False)
                 return False
 
     async def getAuthUrl(self) -> None:
@@ -265,7 +266,7 @@ class AioYiBan:
             "yiban_user_token": self.access_token
         }
         cookies = {'yiban_user_token': self.access_token}
-        async with await self.sess.get(url=url, params=params, headers=header, cookies=cookies,
+        async with self.sess.get(url=url, params=params, headers=header, cookies=cookies,
                                        allow_redirects=False) as aioResponse:
             await self.joinCookie(aioResponse)
             self.verify = aioResponse.headers.get('Location')
@@ -283,7 +284,7 @@ class AioYiBan:
             "verifyRequest": self.verify_request,
             "CSRF": self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
@@ -303,7 +304,7 @@ class AioYiBan:
             'scope': '1,2,3,4,',
             'display': 'html'
         }
-        async with await self.sess.post(url=url, headers=headers, data=data) as aioResponse:
+        async with self.sess.post(url=url, headers=headers, data=data) as aioResponse:
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
             await aioResponse.json(content_type='text/html', encoding='utf-8')
@@ -322,7 +323,7 @@ class AioYiBan:
             'EndTime': f"{today} 23:00",
             'CSRF': self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
@@ -330,11 +331,11 @@ class AioYiBan:
                 if len(response['data']) > 0:
                     for sub in response['data']:
                         if sub['Title'] == f"学生每日健康打卡({today}）":
-                            if DEBUG != True:
+                            if not DEBUG:
                                 if self.admin.get('repeat', False) == 'true':
                                     self.notify(f"今日已打卡")
                                 else:
-                                    self.notify(f"今日已打卡", isSend=False)
+                                    self.notify(f"今日已打卡", is_send=False)
                                 return False
                             else:
                                 self.CompletedTaskID = sub['TaskId']
@@ -366,7 +367,7 @@ class AioYiBan:
             "TaskId": self.CompletedTaskID,
             "CSRF": self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             self.InitiateId = response['data']['InitiateId']
@@ -377,7 +378,7 @@ class AioYiBan:
         params = {
             "CSRF": self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             self.result = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
@@ -394,7 +395,7 @@ class AioYiBan:
             'EndTime': f"{today} 23:00",
             'CSRF': self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
@@ -424,7 +425,7 @@ class AioYiBan:
             "TaskId": self.unCompletedTaskID,
             "CSRF": self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             await asyncio.sleep(0.1)
@@ -441,7 +442,7 @@ class AioYiBan:
         params = {
             "CSRF": self.csrf
         }
-        async with await self.sess.get(url=url, params=params) as aioResponse:
+        async with self.sess.get(url=url, params=params) as aioResponse:
             response = await aioResponse.json(content_type='text/html', encoding='utf-8')
             await self.joinCookie(aioResponse)
             if response['data']['Id'] == self.result['data']['Initiate']['WFId']:
