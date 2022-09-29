@@ -270,7 +270,7 @@ class AioYiBan:
                                        allow_redirects=False) as aioResponse:
             await self.joinCookie(aioResponse)
             self.verify = aioResponse.headers.get('Location')
-            self.verify_request = re.findall(r"verify_request=(.*?)&", self.verify)[0]
+            self.verify_request = re.findall(r"verify_request=(.*?)&", str(self.verify))[0]
 
     async def auth(self) -> None:
         url = "https://api.uyiban.com/base/c/auth/yiban"
